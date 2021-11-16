@@ -1,6 +1,6 @@
 # Tohoga
 
-An interactive map that displays all vacant lots in Washington DC using [Mapbox](https://www.mapbox.com/). 
+An interactive web application map that displays all vacant lots in Washington DC using [Mapbox](https://www.mapbox.com/). 
 Purpose of project will be to promote the use of empty spaces in DC to "greenify" the city via actions such as urban gardening.
 
 [Click here for demo of map (sample data obtained from Zillow)](https://broadleaf-horn-walrus.glitch.me)
