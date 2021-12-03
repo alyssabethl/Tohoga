@@ -9,7 +9,7 @@ Purpose of project will be to promote the use of empty spaces in DC to "greenify
 - [x] create UI mockups using [Figma](https://www.figma.com/)
 - [ ] find database or create a database that contains information of all vacant lots in dc
   - DCRA
-- [ ] design software architecture
+- [x] design software architecture
 - [ ] clarify definition of "vacant lots"
 
 
