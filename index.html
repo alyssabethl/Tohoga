@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">--> 
     <title>Tohoga</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 
     <!--Mapbox GL JS JavaScript and CSS files-->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js'></script> 
@@ -18,6 +21,9 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css?family="Monoton&display=swap" rel="stylesheet" type="text/css">
+
+    <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 
 </head>
 <body>
@@ -44,11 +50,101 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
 
     <script>
+
+        var transformRequest = (url, resourceType) => {
+            var isMapboxRequest =
+                url.slice(8, 22) === "api.mapbox.com" ||
+                url.slice(10, 26) === "tiles.mapbox.com";
+            return {
+                url: isMapboxRequest
+                    ? url.replace("?", "?pluginName=sheetMapper&")
+                    : url
+            };
+        };
+
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWx5c3NhYmV0aGwiLCJhIjoiY2tnZXN5bTVtMGVyZjJ5cnJuenZzdjcwayJ9.d7bYUFCgmnNZy7pQyTji1A';
         var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11'
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            center: [-77.036871, 38.907192], // starting position [lng, lat]
+            zoom: 2, // starting zoom
+            transformRequest: transformRequest
         });
-        </script>
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                // csv export link
+                url: 'https://docs.google.com/spreadsheets/d/1PWeu_0vnLC4nB5cYaIbs81Mmi9rXx1uOwy7pE4wnAjs/gviz/tq?tqx=out:csv&sheet=VacantLots_DC',
+                dataType: "text",
+                success: function (csvData) { makeGeoJSON(csvData); }
+            });
+
+        function makeGeoJSON(csvData) {
+            csv2geojson.csv2geojson(csvData, {
+                latfield: 'Latitude',
+                lonfield: 'Longitude',
+                delimiter: ','
+            }, function (err, data) {
+                map.on('load', function () {
+
+            //Adds layer to the map
+            map.addLayer({
+              'id': 'csvData',
+              'type': 'circle',
+              'source': {
+                'type': 'geojson',
+                'data': data
+              },
+              'paint': {
+                'circle-radius': 5,
+                'circle-color': "purple"
+              }
+            });
+            
+            // When a click event occurs on a feature in the csvData layer, open a popup at the
+            // location of the feature, with description HTML from its properties.
+            map.on('click', 'csvData', function (e) {
+              var coordinates = e.features[0].geometry.coordinates.slice();
+
+              //set popup text
+              var description = `<h3>` + e.features[0].properties.Name + `</h3>` + `<h4>` + `<b>` + `Address: ` 
+                + `</b>` + e.features[0].properties.Address + `</h4>` + `<h4>` + `<b>` + `Phone: ` + `</b>` 
+                + e.features[0].properties.Phone + `</h4>`;
+
+              // Ensure that if the map is zoomed out such that multiple
+              // copies of the feature are visible, the popup appears
+              // over the copy being pointed to.
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              //add Popup to map
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+            });
+        
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.on('mouseenter', 'csvData', function () {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'places', function () {
+              map.getCanvas().style.cursor = '';
+            });
+
+            var bbox = turf.bbox(data);
+            map.fitBounds(bbox, { padding: 50 });
+
+          });
+
+        });
+      };
+    });
+        
+    </script>
 </body>
 </html>
