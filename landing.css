@@ -1,0 +1,78 @@
+body{
+    background-color: gray;
+}
+
+#name{
+    display:relative;
+    padding-top: 10%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+    font-size: 100px;
+    font-family: "Monoton", sans-serif;
+    z-index: 100;
+    width:50%;
+    
+}
+
+
+form{
+    display: relative;
+    margin-left:auto;
+    margin-right: auto;
+    width: 25%;
+    margin-top: 10%;
+    border: 2px solid black;
+    border-radius: 8px;
+    background-color: lightgray;
+    text-align: center;
+}
+
+label{
+    display: inline-block;
+    width:25%;
+    margin: 10px;
+    font-family: Verdana, sans-serif;
+}
+
+input {
+    display: inline-block;
+    width: 50%;
+    margin: 10px;
+    margin-left: 30px;
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+#loginbutton{
+    border: 2px solid black;
+    border-radius: 2px;
+    text-align: center;
+    margin: auto;
+    font-family: Verdana, sans-serif;
+    width:20%;
+    margin-bottom: 2px;
+}
+
+#links{
+    text-align: center;
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+}
+
+
+a:link {
+    color: black;
+  }
+  
+  a:visited {
+    color: black;
+  }
+  
+  a:hover {
+    color: white;
+  }
+  
+  a:active {
+    color: white;
+  }
