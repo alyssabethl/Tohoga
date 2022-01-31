@@ -7,11 +7,12 @@ Purpose of project will be to promote the use of empty spaces in DC to "greenify
 
 ## Current Action Items/Issues ##
 - [x] create UI mockups using [Figma](https://www.figma.com/)
-- [ ] find database or create a database that contains information of all vacant lots in dc
+- [ ] find database or create a database that contains information of all vacant lots in dc 
   - DCRA
 - [x] design software architecture
 - [ ] clarify definition of "vacant lots"
-
+- [ ] test out web scraping zillow using Beautiful Soup
+- [ ] research Firebase
 
 ## Resources ##
 - [Brownfields/Vacant Lot Suitability for Urban Agriculture (proj inspo)](http://superfund.ucsd.edu/initiative/urban-agriculture-assetmapping)
