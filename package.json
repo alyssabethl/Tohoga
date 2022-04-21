@@ -1,0 +1,25 @@
+{
+  "name": "Tohoga",
+  "version": "1.0.0",
+  "description": "An interactive web application map that displays all vacant lots in Washington DC using [Mapbox](https://www.mapbox.com/). \r Purpose of project will be to promote the use of empty spaces in DC to \"greenify\" the city via actions such as urban gardening.",
+  "main": "index.js",
+  "dependencies": {
+    "firebase": "^9.6.7",
+    "prettify": "^0.1.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alyssabethl/Tohoga.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alyssabethl/Tohoga/issues"
+  },
+  "homepage": "https://github.com/alyssabethl/Tohoga#readme"
+}
