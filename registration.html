@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="//www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+    <script src="//www.gstatic.com/firebasejs/7.8.1/firebase-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="authen.css" />
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyCOM1U2IFyAnx6b8CemGiZej5iqGGw7ETY",
+          authDomain: "tohoga-48747.firebaseapp.com",
+          projectId: "tohoga-48747",
+          storageBucket: "tohoga-48747.appspot.com",
+          messagingSenderId: "131035651698",
+          appId: "1:131035651698:web:bbefdd2f446034ae38aceb",
+        };
+        // Initialize Firebase
+        var defaultProject = firebase.initializeApp(firebaseConfig);
+        console.log(defaultProject.name);
+
+        console.log(defaultProject.auth());
+
+        var body = $(document.body),
+          registering = false;
+
+        body.find(".register").click(function () {
+          var name = $.trim(body.find("[name=name]").val());
+          var email = $.trim(body.find("[name=email]").val());
+          var password = $.trim(body.find("[name=password]").val());
+          if (name.length === 0) {
+            alert("Name required");
+            return;
+          }
+          if (email.length === 0) {
+            alert("Email required");
+            return;
+          }
+          if (password.length === 0) {
+            alert("Password required");
+            return;
+          }
+          registering = true;
+          body.find(".register").prop("disabled", true);
+          defaultProject
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .catch(function (error) {
+              console.log(error);
+              if (error.message) {
+                alert(error.message);
+              }
+              body.find(".register").prop("disabled", false);
+            });
+        });
+
+        body.find(".login").click(function () {
+          window.location.href = "/login.html";
+        });
+
+        // listening change state of user
+        defaultProject.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            if (registering) {
+              user
+                .updateProfile({
+                  displayName: $.trim(body.find("[name=name]").val()),
+                })
+                .then(function () {
+                  window.location.href = "/user.html";
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            } else {
+              window.location.href = "/user.html";
+            }
+          }
+          body.find(".register").prop("disabled", false);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="name">
+      Tohoga
+    </div>
+
+    <table>
+      <tr>
+        <th colspan="2">Create Account</th>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td><input type="text" name="name" autocomplete="off" value="" /></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><input type="email" name="email" autocomplete="off" value="" /></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name="password" value="" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button type="button" class="register" disabled>Sign Up</button>
+          <a href="javascript:void(0)" class="login">Already a member?</a>
+        </td>
+      </tr>
+    </table>
+
+   
+  </body>
+</html>
