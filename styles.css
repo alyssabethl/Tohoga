@@ -89,6 +89,7 @@ body {
     font-size: 50px;
     font-family: "Monoton", sans-serif;
     z-index: 100;
+    color: white;
 }
 
 #logout a{
